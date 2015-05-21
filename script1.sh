@@ -76,13 +76,14 @@ done
 #Informacion del sistema de montaje de ficheros, salvo tmpfs
 
 monta=$(ssh -n user@$direccion df -hT)
-echo "Particion Tipo Montado en Tamanyo Disponible"
+#Con la opcion -e para interpretar los tabuladores
+echo -e 'Particion \t Tipo \t Montado en \t Tamanyo \t Disponible'
 echo "$monta" | 
 while read nombre tipo tamanyo usados disp uso montado
 do
 	
 	if [ "$nombre" != "tmpfs" ] && [ "$nombre" != "S.ficheros" ]
 	then
-		echo "$nombre $tipo $montado $tamanyo $disp"
+		echo -e "$nombre \t $tipo \t $montado \t $tamanyo \t $disp"
 	fi
 done 

@@ -1,0 +1,2 @@
+Creamos el volumen lógico con lvcreate --name test --size 10M grupo
+Para dar tipo a la partición hay que seleccionar t dentro de fdisk. Al finalizar hay que elegir w.
