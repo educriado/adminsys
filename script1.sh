@@ -31,13 +31,57 @@ do
 done
 #Mostrar la lista de particiones y sus tamanyos
 echo "Particiones existentes (con su tamaño en bytes):"
-particiones=$(ssh -n user@192.168.56.2 sudo sfdisk -l | egrep '^/dev/' | tr -d '*' | tr -s ' ' | cut -d' ' -f 1,5
+particiones=$(ssh -n user@192.168.56.2 sudo sfdisk -l | egrep '^/dev/' | tr -d '*' | tr -s ' ' | cut -d' ' -f 1,5)
 echo "$particiones" |
 while read particion tamanyo
 do
 	tamanyo=$((tamanyo/1000))
 	echo "$particion $tamanyo MB"
 done
-#Guardamos el tamanyo de bloque
-blocksize=$(ssh -n user@192.168.56.2 sudo tune2fs -l /dev/sda1 | egrep 'Block size' | cut --characters=27-30)
-echo $blocksize
+
+#Mostramos los grupos y volumenes logicos
+
+grupos=$(ssh -n user@192.168.56.2 sudo vgs | tr -s ' ' | cut -d' ' -f 2,7,8)
+discos=$(ssh -n user@192.168.56.2 sudo pvs | tr -s ' ' | cut -d' ' -f 2,3,6,7)
+logicos=$(ssh -n user@192.168.56.2 sudo lvs | tr -s ' ' | cut -d' ' -f 2,3,5)
+cuenta=0
+echo "$grupos" |
+while read nombreg tamg esplg
+do
+	if [ "$cuenta" != "0" ]
+	then
+		echo "Grupo:$nombreg con tamaño:$tamg y espacio libre:$esplg"
+		echo "$discos" |
+		while read nombred grupod tamd lind
+		do
+			if [ "$grupod" == "$nombreg" ]
+			then
+			 echo "	$nombred $tamd $lind"
+			fi
+		done
+		echo "$logicos" |
+		while read nombrel grupol taml
+		do
+			if [ "$grupol" == "$nombreg" ]
+			then
+			 echo "	$nombrel $taml"
+			fi
+		done
+		echo " "
+	fi
+	cuenta=$(($cuenta + 1))
+done
+
+#Informacion del sistema de montaje de ficheros, salvo tmpfs
+
+monta=$(ssh -n user@192.168.56.2 df -hT)
+echo "Particion Tipo Montado en Tamanyo Disponible"
+echo "$monta" | 
+while read nombre tipo tamanyo usados disp uso montado
+do
+	
+	if [ "$nombre" != "tmpfs" ] && [ "$nombre" != "S.ficheros" ]
+	then
+		echo "$nombre $tipo $montado $tamanyo $disp"
+	fi
+done 
