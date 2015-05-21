@@ -14,6 +14,11 @@ direccion="192.168.56.2"
 echo -n "Introduce la linea con la información: "
 read info
 
-echo "$info"
+#Separamos en espacios los campos para leerlos por separado
+info=$(echo "$info" | tr ',' ' ')
+echo "$info" |
+while read grupo vol tam tipo dir
+do
+	#Comprobar la pertenencia
+done
 
-#Primero hay que comprobar si el volumen logico ya existe o no
