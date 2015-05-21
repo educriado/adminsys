@@ -22,17 +22,22 @@
 #Mostar discos duros disponibles
 echo "Discos duros disponibles:"
 resultado=$(ssh -n user@192.168.56.2 sudo sfdisk -s)
+echo "$resultado" | egrep '^/dev/' |
 while read disco tamanyo
 do
-	if [ "$disco" != "total" ]
-	then
-		tamanyo=$(($tamanyo/1000000))
-		echo "$disco $tamanyo MB"
-	fi
-done < "$resultado"
+	taman=$(($tamanyo/1000))
+	echo "$disco $taman MB"
+
+done
 #Mostrar la lista de particiones y sus tamanyos
 echo "Particiones existentes (con su tamaño en bytes):"
-ssh user@192.168.56.2 sudo sfdisk -l | egrep '^/dev/' | tr -d '*' | tr -s ' ' | cut -d ' ' -f1,5
+particiones=$(ssh -n user@192.168.56.2 sudo sfdisk -l | egrep '^/dev/' | tr -d '*' | tr -s ' ' | cut -d' ' -f 1,5
+echo "$particiones" |
+while read particion tamanyo
+do
+	tamanyo=$((tamanyo/1000))
+	echo "$particion $tamanyo MB"
+done
 #Guardamos el tamanyo de bloque
 blocksize=$(ssh -n user@192.168.56.2 sudo tune2fs -l /dev/sda1 | egrep 'Block size' | cut --characters=27-30)
 echo $blocksize
