@@ -18,10 +18,11 @@
 # Añadir a /etc/fstab para que se monten al principio
 # /dev/sdb1 /sdb1 ext3 defaults  0 2
 # /dev/sdb2 /sdb2 ext4 defaults  0 2
+direccion="192.168.56.2"
 
 #Mostar discos duros disponibles
 echo "Discos duros disponibles:"
-resultado=$(ssh -n user@192.168.56.2 sudo sfdisk -s)
+resultado=$(ssh -n user@$direccion sudo sfdisk -s)
 echo "$resultado" | egrep '^/dev/' |
 while read disco tamanyo
 do
@@ -31,7 +32,7 @@ do
 done
 #Mostrar la lista de particiones y sus tamanyos
 echo "Particiones existentes (con su tamaño en bytes):"
-particiones=$(ssh -n user@192.168.56.2 sudo sfdisk -l | egrep '^/dev/' | tr -d '*' | tr -s ' ' | cut -d' ' -f 1,5)
+particiones=$(ssh -n user@$direccion sudo sfdisk -l | egrep '^/dev/' | tr -d '*' | tr -s ' ' | cut -d' ' -f 1,5)
 echo "$particiones" |
 while read particion tamanyo
 do
@@ -41,9 +42,9 @@ done
 
 #Mostramos los grupos y volumenes logicos
 
-grupos=$(ssh -n user@192.168.56.2 sudo vgs | tr -s ' ' | cut -d' ' -f 2,7,8)
-discos=$(ssh -n user@192.168.56.2 sudo pvs | tr -s ' ' | cut -d' ' -f 2,3,6,7)
-logicos=$(ssh -n user@192.168.56.2 sudo lvs | tr -s ' ' | cut -d' ' -f 2,3,5)
+grupos=$(ssh -n user@$direccion sudo vgs | tr -s ' ' | cut -d' ' -f 2,7,8)
+discos=$(ssh -n user@$direccion sudo pvs | tr -s ' ' | cut -d' ' -f 2,3,6,7)
+logicos=$(ssh -n user@$direccion sudo lvs | tr -s ' ' | cut -d' ' -f 2,3,5)
 cuenta=0
 echo "$grupos" |
 while read nombreg tamg esplg
@@ -74,7 +75,7 @@ done
 
 #Informacion del sistema de montaje de ficheros, salvo tmpfs
 
-monta=$(ssh -n user@192.168.56.2 df -hT)
+monta=$(ssh -n user@$direccion df -hT)
 echo "Particion Tipo Montado en Tamanyo Disponible"
 echo "$monta" | 
 while read nombre tipo tamanyo usados disp uso montado
