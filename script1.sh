@@ -2,22 +2,8 @@
 # Eduardo Criado - 662844
 # Pablo Hernandez - 616923
 # Comprobar remotamente (ssh) la situacion de uso y organizacion de discos mediante
-# el comando fdisk -l tras asegurarnos que el disco añadido es sdb hacemos: 
-# sudo fdisk /dev/sdb
-# tras esto se pone la opcion n
-# se indica que la particion debe ser p de primaria
-# numero de particion 1, valor predeterminado, valor predeterminado, valor predeterminado
-# se repite con numero de particion 2.
-# sudo mkfs -t ext3 /dev/sdb1
-# sudo mkfs -t ext4 /dev/sdb2
-# sudo mkdir /sdb1
-# sudo mkdir /sdb2
-# sudo mount -t ext3 /dev/sdb1 /sdb1
-# sudo mount -t ext4 /dev/sdb2 /sdb2
-# sudo less /etc/mtab  #--para comprobar
-# Añadir a /etc/fstab para que se monten al principio
-# /dev/sdb1 /sdb1 ext3 defaults  0 2
-# /dev/sdb2 /sdb2 ext4 defaults  0 2
+# el comando fdisk -l 
+
 direccion="192.168.56.2"
 
 #Mostar discos duros disponibles
