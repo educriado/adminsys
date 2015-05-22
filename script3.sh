@@ -20,21 +20,22 @@ echo "$info" |
 while read grupo vol tam tipo dir
 do
 	#Comprobar la pertenencia
-	resultado=$(sudo lvdisplay grupo)
+	resultado=$( sudo lvdisplay $grupo )
 	#El volumen ya existe, hay que agrandarlo
-	if [ echo "$resultado" | grep $vol ]
+	busqueda=$( echo "$resultado" | grep -c "$vol" )
+	if [ $busqueda -gt 1 ]
 	then
 		echo "Extendiendo el volumen logico..."
-		sudo lvextend -L+ $tam $grupo/$vol 
+		sudo lvextend -L+$tam $grupo/$vol 
 		#Hay que agrandar el filesystem
 		tamanterior=$( sudo lvs | grep $vol | tr -s ' ' | cut -d ' ' -f5)
 		#Quitamos la unidad
 		tamanterior=$(echo "$tamanterior" | tr -d 'm')
 		tamnuevo=$(($tamanterior + $tam))
 		#Tenemos que saber el tamaño anterior para redimensionarlo correctamente
-		sudo umount /dev/$grupo/$vol
+		sudo umount $dir
 		sudo resize2fs /dev/$grupo/$vol $tamnuevo
-		sudo mount -t $tipo /dev/$grupo/$vol
+		sudo mount -t $tipo /dev/$grupo/$vol $dir
 
 	else
 		#Tenemos que crear el volumen, montarlo y añadirlo a fstab
@@ -42,8 +43,7 @@ do
 		sudo mkfs -t $tipo /dev/$grupo/$vol
 		sudo mkdir $dir
 		sudo mount /dev/$grupo/$vol $dir
-		sudo echo /dev/$grupo/$vol $dir $tipo defaults 0 2 >> sudo /etc/fstab
-
+		sudo sed -i -e '$a'"/dev/$grupo/$vol $dir $tipo defaults 0 2" /etc/fstab
 	fi
 done
 
