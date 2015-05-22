@@ -39,10 +39,10 @@ do
 
 	else
 		#Tenemos que crear el volumen, montarlo y añadirlo a fstab
-		ssh -n user@$direccion sudo lvcreate -L"$tam" -n "$vol" "$grupo"
-		ssh -n user@$direccion sudo mkdr -t $tipo /dev/$grupo/$vol
+		ssh -n user@$direccion sudo lvcreate -L$tam -n $vol $grupo
+		ssh -n user@$direccion sudo mkfs -t $tipo /dev/$grupo/$vol
 		ssh -n user@$direccion sudo mount /dev/$grupo/$vol $dir
-		ssh -n user@$direccion sudo echo /dev/$grupo/$vol $dir $tipo defaults 0 2 >> /etc/fstab
+		ssh -n user@$direccion sudo echo /dev/$grupo/$vol $dir $tipo defaults 0 2 >> sudo /etc/fstab
 
 	fi
 done
