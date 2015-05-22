@@ -7,6 +7,7 @@
 # correspondiente para el arranque del sistema.
 # La especificacion de la entrada es:
 # grupoVolumen,volumenLogico,tamaño,tipoSistFich,directorioMont
+# Vamos a restringir que el tamaño venga en MB
 
 direccion="192.168.56.2"
 
@@ -27,9 +28,13 @@ do
 		echo "Extendiendo el volumen logico..."
 		ssh -n user@$direccion sudo lvextend -L+"$tam" "$grupo/$vol" 
 		#Hay que agrandar el filesystem
-		ssh -n user@$direccion sudo umount /dev/"$grupo/$vol"
+		tamanterior=$(ssh -n user@$direccion sudo lvs | grep "$vol" | tr -s ' ' | cut -d ' ' -f5)
+		#Quitamos la unidad
+		tamanterior=$(echo "$tamanterior" | tr -d 'm')
+		tamnuevo=$(($tamanterior + $tam))
 		#Tenemos que saber el tamaño anterior para redimensionarlo correctamente
-		ssh -n user@$direccion sudo resize2fs /dev/"$grupo/$vol"
+		ssh -n user@$direccion sudo umount /dev/"$grupo/$vol"
+		ssh -n user@$direccion sudo resize2fs /dev/"$grupo/$vol" "$tamnuevo"
 		ssh -n user@$direccion sudo mount -t "$tipo" /dev/"$grupo/$vol"
 
 	else
