@@ -26,16 +26,16 @@ do
 	if [ echo "$resultado" | grep $vol ]
 	then
 		echo "Extendiendo el volumen logico..."
-		ssh -n user@$direccion sudo lvextend -L+"$tam" "$grupo/$vol" 
+		ssh -n user@$direccion sudo lvextend -L+ $tam $grupo/$vol 
 		#Hay que agrandar el filesystem
-		tamanterior=$(ssh -n user@$direccion sudo lvs | grep "$vol" | tr -s ' ' | cut -d ' ' -f5)
+		tamanterior=$(ssh -n user@$direccion sudo lvs | grep $vol | tr -s ' ' | cut -d ' ' -f5)
 		#Quitamos la unidad
 		tamanterior=$(echo "$tamanterior" | tr -d 'm')
 		tamnuevo=$(($tamanterior + $tam))
 		#Tenemos que saber el tamaño anterior para redimensionarlo correctamente
-		ssh -n user@$direccion sudo umount /dev/"$grupo/$vol"
-		ssh -n user@$direccion sudo resize2fs /dev/"$grupo/$vol" "$tamnuevo"
-		ssh -n user@$direccion sudo mount -t "$tipo" /dev/"$grupo/$vol"
+		ssh -n user@$direccion sudo umount /dev/$grupo/$vol
+		ssh -n user@$direccion sudo resize2fs /dev/$grupo/$vol $tamnuevo
+		ssh -n user@$direccion sudo mount -t $tipo /dev/$grupo/$vol
 
 	else
 		#Tenemos que crear el volumen, montarlo y añadirlo a fstab
