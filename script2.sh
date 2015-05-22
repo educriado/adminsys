@@ -19,7 +19,7 @@ do
 	if [ "$arg" != "$0" ] && [ "$arg" != "$1" ]
 	then
 		#Añadimos las particiones al grupo indicado
-		ssh -n user@$direccion sudo vgextend "$1" "$arg"	
+		sudo vgextend "$1" "$arg"	
 	fi
 done
 

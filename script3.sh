@@ -21,28 +21,29 @@ echo "$info" |
 while read grupo vol tam tipo dir
 do
 	#Comprobar la pertenencia
-	resultado=$(ssh -n user@$direccion sudo lvdisplay grupo)
+	resultado=$( sudo lvdisplay grupo)
 	#El volumen ya existe, hay que agrandarlo
 	if [ echo "$resultado" | grep $vol ]
 	then
 		echo "Extendiendo el volumen logico..."
-		ssh -n user@$direccion sudo lvextend -L+ $tam $grupo/$vol 
+		 sudo lvextend -L+ $tam $grupo/$vol 
 		#Hay que agrandar el filesystem
-		tamanterior=$(ssh -n user@$direccion sudo lvs | grep $vol | tr -s ' ' | cut -d ' ' -f5)
+		tamanterior=$( sudo lvs | grep $vol | tr -s ' ' | cut -d ' ' -f5)
 		#Quitamos la unidad
 		tamanterior=$(echo "$tamanterior" | tr -d 'm')
 		tamnuevo=$(($tamanterior + $tam))
 		#Tenemos que saber el tamaño anterior para redimensionarlo correctamente
-		ssh -n user@$direccion sudo umount /dev/$grupo/$vol
-		ssh -n user@$direccion sudo resize2fs /dev/$grupo/$vol $tamnuevo
-		ssh -n user@$direccion sudo mount -t $tipo /dev/$grupo/$vol
+		 sudo umount /dev/$grupo/$vol
+		 sudo resize2fs /dev/$grupo/$vol $tamnuevo
+		 sudo mount -t $tipo /dev/$grupo/$vol
 
 	else
 		#Tenemos que crear el volumen, montarlo y añadirlo a fstab
-		ssh -n user@$direccion sudo lvcreate -L$tam -n $vol $grupo
-		ssh -n user@$direccion sudo mkfs -t $tipo /dev/$grupo/$vol
-		ssh -n user@$direccion sudo mount /dev/$grupo/$vol $dir
-		ssh -n user@$direccion sudo echo /dev/$grupo/$vol $dir $tipo defaults 0 2 >> sudo /etc/fstab
+		 sudo lvcreate -L$tam -n $vol $grupo
+		 sudo mkfs -t $tipo /dev/$grupo/$vol
+		 sudo mkdir $dir
+		 sudo mount /dev/$grupo/$vol $dir
+		 sudo echo /dev/$grupo/$vol $dir $tipo defaults 0 2 >> sudo /etc/fstab
 
 	fi
 done
