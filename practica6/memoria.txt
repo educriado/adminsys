@@ -1,0 +1,3 @@
+Tenemos que ejecutar el script en las dos maquinas periodicamente (usando cron), y mandando el resultado por logs. 
+Una maquina hace de anfitrión y guarda los logs de las dos.
+Para que los logs se envíen por la red hay que editar rsyslog.conf.

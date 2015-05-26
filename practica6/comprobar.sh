@@ -5,7 +5,6 @@
 #la otra maquina.
 #Una de las dos maquinas mantienen los logs de las dos maquinas (/var/log/monitorizacion)
 
-direccion="192.168.56.2"
 
 #Saber si la maquina está conectada
 ping -c1 www.google.es > /dev/null
