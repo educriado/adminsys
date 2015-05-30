@@ -41,7 +41,6 @@ df -m | tr -s ' ' | cut -d ' ' -f1,3,4
 active=0
 puertos=0
 echo "Conexiones activas:"
-netstat | 
 while read proto recv send local addr faddr state
 do
 	if [ "$proto" = "Active" ]
@@ -58,6 +57,7 @@ do
 			puertos=$(($puertos + 1))
 		fi
 	fi
-done
+done <<< $(netstat)
+#Hay que solucionar que la variable no se actualiza (proceso hijo)
 echo "Tenemos $puertos puertos."
 
