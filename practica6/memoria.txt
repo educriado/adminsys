@@ -1,10 +1,9 @@
+Desde cada maquina hacemos ping a la otra.
 Tenemos que ejecutar el script en las dos maquinas periodicamente (usando cron), y mandando el resultado por logs. 
 Una maquina hace de anfitrión y guarda los logs de las dos.
 Para que los logs se envíen por la red hay que editar rsyslog.conf.
 Ya lo tenemos editado bien.
 Ya hemos editado el crontab de una de las dos maquinas (la que manda), falta editarlo en la otra.
-Falla del script el numero de puertos, y sacar la informacion de red mediante netstat y, quizas,
-solo cogiendo los puertos que esten a listening.
-Ademas hace falta que comprobemos si la otra maquina esta conectada.
-Para leer el numero de puertos y de conexiones no está bien así, igual es mejor utilizar
-grep para coger las líneas que interesan, y llevar la cuenta.
+Elegimos los puertos que tienen listening o connected y las conexiones que tienen established.
+
+Esta terminado el script, falta hacer el logcheck.
