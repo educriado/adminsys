@@ -6,8 +6,9 @@
 #Una de las dos maquinas mantienen los logs de las dos maquinas (/var/log/monitorizacion)
 
 
-#Saber si la maquina está conectada
-ping -c1 www.google.es > /dev/null
+#Saber si la maquina está conectada a la otra
+direccionotra="192.168.56.3"
+ping -c1 "$direccionotra" > /dev/null
 if [ $? -eq 0 ]
 then
 	echo La maquina esta conectada
@@ -36,10 +37,12 @@ done
 #Espacio ocupado y espacio libre, en MB en este caso
 df -m | tr -s ' ' | cut -d ' ' -f1,3,4
 #Numero de puertos y conexiones abiertos
-#Las conexiones aparecen despues del primer Active y los puertos despues
-#del segundo.
-active=0
-puertos=0
+#Consideramos conexion activa la que aparece ESTABLISHED
+#Consideramos los puertos con estado LISTENING o CONNECTED
+conexiones=$(netstat -a | egrep -c 'ESTABLISHED')
+puertos=$(netstat -a | egrep -c 'LISTENING | CONNECTED')
+echo $conexiones $puertos
+#Sustituir por un egrep, aumentando el numero.
 echo "Conexiones activas:"
 while read proto recv send local addr faddr state
 do
