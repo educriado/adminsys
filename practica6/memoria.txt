@@ -7,3 +7,5 @@ Ya hemos editado el crontab de una de las dos maquinas (la que manda), falta edi
 Elegimos los puertos que tienen listening o connected y las conexiones que tienen established.
 
 Esta terminado el script, falta hacer el logcheck.
+Informacion sobre el logcheck:
+http://mundo-linux-b.blogspot.com.es/2012/12/logcheck-en-debian-squeeze.html
