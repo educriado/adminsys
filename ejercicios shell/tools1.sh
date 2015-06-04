@@ -13,3 +13,6 @@ sort -t : -k 3 -n
 
 #Extraer hora y minuto de la fecha
 date | cut -d ' ' -f 5 | cut -d : -f 1,2
+
+#Formatear la fecha con la forma jun 4, 2015
+date | tr -s ' ' | cut -d ' ' -f 2,3,6 | sed -r 's/( [0-9]+)$/,\1/'
