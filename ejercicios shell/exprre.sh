@@ -3,8 +3,8 @@
 #Expresiones regulares
 sed -r 's/No/XX/g'			#Cambia No por XX
 sed -r 's/^/>>/'			#Inserta >> el principio de cada linea
-sed -r 's/(*)..$/\1/g' 		#Elimina dos ultimos caracteres de la linea
-sed -r 's/(.*)\..*/\1/g' 	#Borrar extension de ficheros
+sed -r 's/(.*)..$/\1/g' 	#Elimina dos ultimos caracteres de la linea
+sed -r 's/([A-Za-z]+)\.[^ ]+/\1/g' 	#Borrar extension de ficheros
 sed -r 's/[AEIOUaeiou]//g'	#Elimina todas las vocales de un texto
 sed -r 's/[A-Z]/*/g'		#Sustituye las mayusculas por *
 sed -r 's/[ ]+/ /g'			#Espacios repetidos por uno solo
