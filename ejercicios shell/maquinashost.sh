@@ -3,7 +3,7 @@
 #de la direccion sea igual al sufijo del nombre + 40.
 #-------------------------------------------------------------------------------------------
 #  Ejemplo:
-#	212.128.4.213 gamma03.escet.urjc.es gamma0 -> 192.168.0.43 gamma03.escet.urjc.es gamma03
+#	212.128.4.213 gamma03.escet.urjc.es gamma03 -> 192.168.0.43 gamma03.escet.urjc.es gamma03
 #
 #-------------------------------------------------------------------------------------------
 
