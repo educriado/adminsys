@@ -2,10 +2,11 @@ Desde cada maquina hacemos ping a la otra.
 Tenemos que ejecutar el script en las dos maquinas periodicamente (usando cron), y mandando el resultado por logs. 
 Una maquina hace de anfitrión y guarda los logs de las dos.
 Para que los logs se envíen por la red hay que editar rsyslog.conf.
-Ya lo tenemos editado bien.
-Ya hemos editado el crontab de una de las dos maquinas (la que manda), falta editarlo en la otra.
+En la maquina que envia el log añadir local0.info @@ip de la maquina a la que enviar.
+En la maquina que recibe el log añadir local0.info /var/log/monitorizacion.
 Elegimos los puertos que tienen listening o connected y las conexiones que tienen established.
 
-Esta terminado el script, falta hacer el logcheck.
-Informacion sobre el logcheck:
-http://mundo-linux-b.blogspot.com.es/2012/12/logcheck-en-debian-squeeze.html
+Para realizar la segunda parte primero se installa logcheck en la maquina anfitrion, que es la que guarda
+los logs. En /etc/logcheck/logcheck.logfiles se debe añadir la linea /var/log/monitorizacion. Para las reglas lo que se
+hace es añadir en /etc/logcheck/ignore.d.server reglas con las que ignorar los mensajes que no nos interesan.
+Por ejemplo quitar todos y dejar solo que se nos avise si la otra maquina no está conectada.
