@@ -1,3 +1,5 @@
+Maquina 1
+---------
 Comenzamos con la maquina 1. Se activa la reexpedición mediante "echo 1 > /proc/sys/net/ipv4/ip_forward" y 
 "sysctl -w net.ipv6.conf.all.forwarding=1". Se configura /etc/network/interface e instalo isc-dhcp-server.
 Una vez instalado, modificamos el archivo /etc/default/isc-dhcp-server añadiendo INTERFACES=”eth2″. En el
@@ -12,3 +14,10 @@ host debian1 {
 	hardware ethernet #añadir mac de eth2 o deseada;
 	fixed-address 192.168.57.128; #Esto no se si esta bien
 }
+
+Maquinas 5 y 6
+--------------
+La maquina 6 tiene dos interfaces, una para la red interna 3 y otra para la 2.
+La red interna 3 tiene la IP 192.168.30.0 y la 2 192.168.20.0.
+La maquina 6 tiene la IP 192.168.30.1 para la red 3 y 192.168.20.3 para la 2.
+La maquina 5 tiene la IP 192.168.30.2.
