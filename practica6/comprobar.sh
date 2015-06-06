@@ -14,6 +14,7 @@ then
 	echo La maquina esta conectada
 else
 	echo La maquina no esta conectada
+	exit 1
 fi
 
 #Número de usuarios y carga de procesador
