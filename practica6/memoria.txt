@@ -1,10 +1,19 @@
+MEMORIA PRACTICA 6
+Eduardo Criado  - 662844
+Pablo Hernandez - 616923
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Parte 1
+~~~~~~~
 Desde cada maquina hacemos ping a la otra.
+Para contar los puertos hemos elegido los que tienen listening o connected como estado. Para las conexiones 
+hemos contado las que su estado es established.
 Tenemos que ejecutar el script en las dos maquinas periodicamente (usando cron), y mandando el resultado por logs. 
-Una maquina hace de anfitrión y guarda los logs de las dos.
-Para que los logs se envíen por la red hay que editar rsyslog.conf.
+Una maquina hace de anfitrión y guarda los logs de las dos (creamos /var/log/monitorizacion).
+Para que los logs se envíen por la red hay que editar rsyslog.conf:
 En la maquina que envia el log añadir local0.info @@ip de la maquina a la que enviar.
-En la maquina que recibe el log añadir local0.info /var/log/monitorizacion.
-Elegimos los puertos que tienen listening o connected y las conexiones que tienen established.
+En la maquina que recibe el log añadir local0.info /var/log/monitorizacion y descomentar las lineas que permiten recibir logs
+via TCP.
 
 Para realizar la segunda parte primero se installa logcheck en la maquina anfitrion, que es la que guarda
 los logs. En /etc/logcheck/logcheck.logfiles se debe añadir la linea /var/log/monitorizacion. En /etc/logcheck/logcheck.conf
