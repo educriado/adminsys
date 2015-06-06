@@ -20,4 +20,5 @@ Maquinas 5 y 6
 La maquina 6 tiene dos interfaces, una para la red interna 3 y otra para la 2.
 La red interna 3 tiene la IP 192.168.30.0 y la 2 192.168.20.0.
 La maquina 6 tiene la IP 192.168.30.1 para la red 3 y 192.168.20.3 para la 2.
+El orden tiene que coincidir con el de las redes en virtualbox, si no no funciona.
 La maquina 5 tiene la IP 192.168.30.2.
