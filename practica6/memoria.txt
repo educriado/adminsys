@@ -7,6 +7,7 @@ En la maquina que recibe el log añadir local0.info /var/log/monitorizacion.
 Elegimos los puertos que tienen listening o connected y las conexiones que tienen established.
 
 Para realizar la segunda parte primero se installa logcheck en la maquina anfitrion, que es la que guarda
-los logs. En /etc/logcheck/logcheck.logfiles se debe añadir la linea /var/log/monitorizacion. Para las reglas lo que se
-hace es añadir en /etc/logcheck/ignore.d.server reglas con las que ignorar los mensajes que no nos interesan.
-Por ejemplo quitar todos y dejar solo que se nos avise si la otra maquina no está conectada.
+los logs. En /etc/logcheck/logcheck.logfiles se debe añadir la linea /var/log/monitorizacion. En /etc/logcheck/logcheck.conf
+en mailto poner user. Para las reglas lo que se hace es añadir en /etc/logcheck/ignore.d.server reglas con las que 
+ignorar los mensajes que no nos interesan. Por ejemplo quitar todos y dejar solo que se nos avise si la otra maquina 
+no está conectada.
