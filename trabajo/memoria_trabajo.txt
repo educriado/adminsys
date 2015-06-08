@@ -1,3 +1,8 @@
+Memoria Trabajo
+---------------
+Pablo Hernandez - 616923
+Eduardo Criado - 662844
+
 Maquina 1
 ---------
 Comenzamos con la maquina 1. Se activa la reexpedición editando el fichero /etc/sysctl.conf y 
