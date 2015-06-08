@@ -1,24 +1,42 @@
 Maquina 1
 ---------
-Comenzamos con la maquina 1. Se activa la reexpedición mediante "echo 1 > /proc/sys/net/ipv4/ip_forward" y 
-"sysctl -w net.ipv6.conf.all.forwarding=1". Se configura /etc/network/interface e instalo isc-dhcp-server.
-Una vez instalado, modificamos el archivo /etc/default/isc-dhcp-server añadiendo INTERFACES=”eth2″. En el
-fichero /etc/dhcp/dhcpd.conf debemos añadir:
-#La subnet se puede cambiar, si se cambia cambiar también range. La parte de option es la ip de la maquina.
-subnet 192.168.57.0 netmask 255.255.255.0 {
-	range 192.168.57.4 192.168.57.20;
-	option routers 192.168.57.2;
+Comenzamos con la maquina 1. Se activa la reexpedición editando el fichero /etc/sysctl.conf y 
+descomentar # net.ipv4.ip_forward=1. 
+Se configura /etc/network/interface:
+eth0 es para la conexión con NAT.
+eth1 es para la conexión con nuestro oredenador, tiene la ip 192.168.0.2
+eth2 es para la red 1, tiene la ip 192.168.10.2
+eth3 es para la red 2, tiene la ip 192.168.10.2
+Para el servidor DHCP, se instala isc-dhcp-server. Una vez instalado, modificamos el archivo 
+/etc/default/isc-dhcp-server añadiendo INTERFACES=”eth3″. 
+En el fichero /etc/dhcp/dhcpd.conf debemos añadir:
+option routers 192.168.20.2;
+subnet 192.168.20.0 netmask 255.255.255.0 {
+	range 192.168.20.4 192.168.20.20;
 }
+Para configurar el NAT ejecutamos "iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o eth0 -j MASQUERADE".
+Para guardarlas hacer "iptables-save > reglas" y para cargarlas "iptables-restore < reglas"
+Ejecutar "ip route add 192.168.30.0/24 via 192.168.20.3
 
-host debian1 {
-	hardware ethernet #añadir mac de eth2 o deseada;
-	fixed-address 192.168.57.128; #Esto no se si esta bien
-}
+Maquina 2
+---------
+Al estar en la red 1 tiene de ip 192.168.10.1
+Ejecutamos "ip route add default via 192.168.10.2" para añadir la ruta por defecto.
+Instalamos nginx con "apt-get install nginx"
+
+Maquinas 3 y 4
+--------------
+Las dejamos como están, con el fichero /etc/network/interface en dhcp.
+
 
 Maquinas 5 y 6
 --------------
 La maquina 6 tiene dos interfaces, una para la red interna 3 y otra para la 2.
 La red interna 3 tiene la IP 192.168.30.0 y la 2 192.168.20.0.
 La maquina 6 tiene la IP 192.168.30.1 para la red 3 y 192.168.20.3 para la 2.
-El orden tiene que coincidir con el de las redes en virtualbox, si no no funciona.
 La maquina 5 tiene la IP 192.168.30.2.
+En la maquina 6 ejecutar "ip route add default via 192.168.20.2"
+En la maquina 5 ejecutar "ip route add default via 192.168.30.1"
+
+Para que las acciones como ip route, iptables, perduren en los inicios se crean scripts con los comandos y se guardan
+en /etc/init.d una vez creado cada script se debe ejecutar "update-rc.d <nombre> defaults" y así los datos se mantienen.
