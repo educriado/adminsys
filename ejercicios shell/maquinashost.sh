@@ -13,7 +13,8 @@ fi
 
 while read ip dominio host 
 do
-	if [ echo "$host" | egrep 'gamma' ] > /dev/null
+	echo "$host" | egrep 'gamma' > /dev/null
+	if [ $? -eq 0 ]
 	then
 		numero=$(echo "$host" | sed -r 's/.*(..)/\1/')
 		numero=$((40 + $numero))
