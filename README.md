@@ -1,2 +1,3 @@
 # adminsys
-Practicas de la asignatura Administracion de Sistemas. 2014-2015.
+Practicas de la asignatura Administracion de Sistemas, incluida la memoria del **trabajo**. 
+2014-2015.
